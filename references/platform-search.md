@@ -127,8 +127,16 @@ export GITHUB_TOKEN="<github pat>"   # gh 已登录时可省略
 
 ### 打包分发前
 
-`.env` 不进 git，但 `package_skill.py` 会把目录内所有文件打进 zip。
-**打包前确认 `.env` 不含真实 token**，否则令牌会随 zip 泄露。
+`package_skill.py` 会把目录内**所有**文件打进 zip，包括 `.env` 和 `.git`。
+打包前先临时移走这两个，打完再还原：
+
+```bash
+mv .env /tmp/osr.env && mv .git /tmp/osr.git
+python3 <skill-creator>/scripts/package_skill.py . ..
+mv /tmp/osr.env .env && mv /tmp/osr.git .git
+```
+
+否则令牌会随 zip 泄露，zip 里还会多出几十个 `.git/hooks` 样例文件。
 
 ## 七、检索质量自检
 
