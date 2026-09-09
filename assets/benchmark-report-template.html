@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="qsjd5hWlHQECOgQk7CQ8dz">
+<head data-page-node-id="nUSPCJbbeKXRdnfBiC62Lg">
+<meta charset="UTF-8" data-page-node-id="2CDvdQTqXqIcjo70uXNNtY">
+<meta name="viewport" content="width=device-width, initial-scale=1.0" data-page-node-id="3Qg8MkZ09MmjpHZWsLVRfn">
+<title>{{项目名称}} 开源对标报告</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --panel:#ffffff; --border:#e3e6eb; --text:#1f2328;
+    --muted:#6b7280; --accent:#2563eb; --accent-soft:#eff4ff;
+    --ok:#16a34a; --ok-bg:#e8f6ed; --part:#d97706; --part-bg:#fdf3e3;
+    --diff:#4b5563; --diff-bg:#eef0f3; --no:#dc2626; --no-bg:#fdecec;
+    --na:#9ca3af; --na-bg:#f3f4f6;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    font-size:14px;line-height:1.65;}
+  .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 64px;}
+  header{background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:24px 28px;margin-bottom:20px;}
+  h1{margin:0 0 8px;font-size:24px;letter-spacing:.3px;}
+  .meta{color:var(--muted);font-size:13px;}
+  .meta b{color:var(--text);font-weight:600;}
+  .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;
+    background:var(--accent-soft);color:var(--accent);margin-left:8px;}
+  section{background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:20px 24px;margin-bottom:20px;}
+  h2{margin:0 0 16px;font-size:17px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+  h3{margin:22px 0 10px;font-size:15px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:#fafbfc;font-weight:600;white-space:nowrap;}
+  tbody tr:nth-child(even){background:#fcfcfd;}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+  .card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:#fff;}
+  .card h4{margin:0 0 6px;font-size:14px;}
+  .card a{color:var(--accent);text-decoration:none;word-break:break-all;font-size:12px;}
+  .card p{margin:8px 0 0;color:var(--muted);font-size:12.5px;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+  .kv{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .tag{font-size:11.5px;padding:2px 8px;border-radius:6px;background:var(--diff-bg);color:var(--diff);}
+  .score{font-weight:600;color:var(--accent);}
+  .m{display:inline-block;min-width:20px;text-align:center;padding:1px 6px;border-radius:6px;font-size:12px;}
+  .yes{background:var(--ok-bg);color:var(--ok);}
+  .part{background:var(--part-bg);color:var(--part);}
+  .diff{background:var(--diff-bg);color:var(--diff);}
+  .no{background:var(--no-bg);color:var(--no);}
+  .na{background:var(--na-bg);color:var(--na);}
+  .legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:12px;color:var(--muted);}
+  .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  .col{border:1px solid var(--border);border-radius:10px;padding:14px 16px;}
+  .col h4{margin:0 0 10px;font-size:14px;}
+  .col.a{background:var(--ok-bg);} .col.b{background:var(--part-bg);} .col.c{background:var(--no-bg);}
+  ul{margin:0;padding-left:18px;} li{margin-bottom:6px;}
+  ol{margin:0;padding-left:20px;} ol li{margin-bottom:10px;}
+  .flow{border-left:3px solid var(--accent);padding-left:14px;margin-bottom:18px;}
+  .flowname{font-weight:600;margin-bottom:8px;}
+  .note{background:var(--accent-soft);border-left:3px solid var(--accent);
+    padding:10px 14px;border-radius:0 8px 8px 0;margin-top:12px;font-size:13px;}
+  .warn{background:var(--part-bg);border-left:3px solid var(--part);
+    padding:10px 14px;border-radius:0 8px 8px 0;margin:12px 0;font-size:13px;}
+  .empty{color:var(--muted);font-style:italic;}
+  footer{color:var(--muted);font-size:12px;text-align:center;margin-top:24px;}
+  @media(max-width:760px){.cols{grid-template-columns:1fr;}}
+</style>
+</head>
+<body data-page-node-id="ZqxoEBqILZRL17xneTnfDC">
+<div class="wrap" data-page-node-id="yRMOoAvY8mFCDzUXymXcZA">
+  <header data-page-node-id="y21toSsmJ8yRhPEl1KF9Xn">
+    <h1 data-page-node-id="lgnFOn2tRmOd91ClFPDyxo"><span id="t-title" data-page-node-id="Bey7EpeS9wjPu9JwfJHFDH">项目名称</span> 开源对标报告<span class="badge" id="t-level" data-page-node-id="4u8TquqRv79CebscOYqKzT">L2</span></h1>
+    <div class="meta" data-page-node-id="jBA5tlyAvJpaMDuyAc1xK8">
+      输入 PRD：<b id="t-prd" data-page-node-id="lmzeTPXhGdGIDhCT0bLu6x">—</b> ｜ 检索时间：<b id="t-date" data-page-node-id="Fkk3nyDF4k3uXZ7wcgDtEf">—</b><br data-page-node-id="jAZuweNHqxhUgAxlG8HoMC">
+      检索关键词（中）：<b id="t-kwzh" data-page-node-id="JG5QYgcwdR2bo9w4RVAtr9">—</b><br data-page-node-id="Vxj9m01lqSHOSghsTkGaQs">
+      检索关键词（英）：<b id="t-kwen" data-page-node-id="BMssZjX8keWMk4IMtubPH1">—</b>
+    </div>
+  </header>
+
+  <section data-page-node-id="49DQya03SgVSbjaOxXzbBh">
+    <h2 data-page-node-id="Bf7wL2CpkJGDGNG7kHFWVw">0. 检索执行摘要</h2>
+    <table data-page-node-id="6XqFZnt98lBd87B11w4X15"><thead data-page-node-id="hOCJzmRV4mt778zzPrzzBY"><tr data-page-node-id="BN3tcOVwCo8G490vQTw8y5"><th data-page-node-id="0ilukPHAfpSd1hQCVtkYuD">平台</th><th data-page-node-id="yXtSA9Htx1vcygklHlJsy1">通道</th><th data-page-node-id="XIpnURRkL9fMoKwyaSlvZs">状态</th><th data-page-node-id="L0Vf93J8nNxGNmys8HzZq1">候选数</th><th data-page-node-id="4g7nT8KzBNGp7HJltNqgzB">备注</th></tr></thead>
+      <tbody id="s-platforms" data-page-node-id="yMZhl72hoXFq9kJfDBPes0"></tbody></table>
+    <div class="warn" id="s-warn" data-page-node-id="aPtMrArNrUaJW5y3APoUbN">未启用 API 的平台必须通过网页检索兜底完成，不得留空。</div>
+  </section>
+
+  <section data-page-node-id="5ceTn5zssFDC4NGMwEY79X">
+    <h2 data-page-node-id="HBZPh3fh02H0w5dzJIlevH">1. 候选项目清单</h2>
+    <div class="cards" id="s-cards" data-page-node-id="4XI5WfYjWfYFQHcFgHxFCc"></div>
+    <h3 data-page-node-id="OGdEFm6WUCURDFS8sYyMYX">剔除项及原因</h3>
+    <ul id="s-rejected" data-page-node-id="xFFKLbHl5Vd9aRBhFtD80t"></ul>
+  </section>
+
+  <section data-page-node-id="1soSy6YMFDCSinYnR38G1u">
+    <h2 data-page-node-id="SZEjSsJJHTIrhqBxrfg3wg">2. 功能对照矩阵</h2>
+    <div style="overflow-x:auto" data-page-node-id="E9FQlKhMKBQkFw7J3bCxDR"><table data-page-node-id="Rd3FXTVDFD0dLJk5VbTj5C"><thead id="s-feat-head" data-page-node-id="NU5HZPJ1UWmF1aIdSnlQAd"></thead><tbody id="s-feat-body" data-page-node-id="uS84mGfaBVe7k9gf7xVFMj"></tbody></table></div>
+    <div class="legend" data-page-node-id="9RwfvBh4JxzZ3AOFu7fN26">
+      <span data-page-node-id="BaZzQtahleDz3pg9xzdnoZ"><b class="m yes" data-page-node-id="8DNmZp2VhmTgocN6gDAdFK">✅</b> 完整支持</span>
+      <span data-page-node-id="NJ06iIn3e75NzugrVWpQxH"><b class="m part" data-page-node-id="ruuTPT5D8XgS5tDvjFgG8Y">🟡</b> 部分支持需改造</span>
+      <span data-page-node-id="2NGpBLHpfYzbL6ZMSf5mTS"><b class="m diff" data-page-node-id="OFywBcsrm83u5yEuTPHWaI">⚪</b> 概念相同实现不同</span>
+      <span data-page-node-id="LjAvaAw45QnQaEIXZDhBuw"><b class="m no" data-page-node-id="rHkVdTG86ykoODHLK2mSNM">❌</b> 未发现</span>
+      <span data-page-node-id="2WYFZu3bHMSp9pXM5WfdF1"><b class="m na" data-page-node-id="25StTszHBihOvGqZIxyl5D">➖</b> 不涉及</span>
+    </div>
+    <h3 data-page-node-id="Fv3lWiRKyOC6jWyxugO87t">关键差异说明</h3>
+    <ol id="s-feat-notes" data-page-node-id="2PQei0klXTCRA2aFG28yNX"></ol>
+  </section>
+
+  <section data-page-node-id="nmLoc76WvfA7cqjwH1cyLL">
+    <h2 data-page-node-id="6Sld6Cp5mItAOhuABUYDKF">3. 业务流程对照</h2>
+    <div id="s-flows" data-page-node-id="09bDBeOhlYJqWYyvee8bGC"></div>
+  </section>
+
+  <section data-page-node-id="dxY5TWDygguZcbeWICAYhH">
+    <h2 data-page-node-id="o8x1Vf1k5svhrDxcoM4e0P">4. 数据模型对照</h2>
+    <table data-page-node-id="k6So16iI3sSBh4QYd5enRA"><thead data-page-node-id="HmjU04sTAcVVeGXSUwArLZ"><tr data-page-node-id="pu72DDBWhzMtmspQ6pvxeZ"><th data-page-node-id="exZHHHHB4t6RFHVKZn563N">我方实体</th><th data-page-node-id="FqtB4Befr0xAZyBOrl6R2i">关键字段</th><th data-page-node-id="Fb9HNHHPZE55PJr04zSeoI">对标项目对应实体</th><th data-page-node-id="xDMwfiGiQnQymAn2liUL7V">差异</th></tr></thead>
+      <tbody id="s-dm" data-page-node-id="9itKoCnNGd0Y81HBEcpUUy"></tbody></table>
+    <div class="note" id="s-dm-missing" data-page-node-id="2BVOYsbjzQmbLRrzVKUHk5"></div>
+  </section>
+
+  <section data-page-node-id="QnvhMnaWHyn4t2VPpmhhz6">
+    <h2 data-page-node-id="x9RvmF6CJVIFFikRopWl74">5. 差距分析</h2>
+    <div class="cols" data-page-node-id="L3AKk636shjoIvEt6Q4AJJ">
+      <div class="col a" data-page-node-id="jYrn5DqxFxlZMjKF5Kz4A0"><h4 data-page-node-id="5DwdLvWjOYgLcnvNga5nuJ">A 可直接借鉴</h4><ul id="s-gap-a" data-page-node-id="Ag26EVqWMhVMj69mLICDjA"></ul></div>
+      <div class="col b" data-page-node-id="7fqlZutf1HYuaIwtKSr310"><h4 data-page-node-id="hdzMsibECThOofO8aLG5jE">B 需改造复用</h4><ul id="s-gap-b" data-page-node-id="cjoFwsEsHBI0NGTP93TlKx"></ul></div>
+      <div class="col c" data-page-node-id="HxmGXBVXNCWG3Y7jZfHbUK"><h4 data-page-node-id="neXHGXuGBSn0RjKhPUHM7C">C 完全缺失（自研难点）</h4><ul id="s-gap-c" data-page-node-id="v06f1xLXiQ4w3Q1dAsgmyZ"></ul></div>
+    </div>
+  </section>
+
+  <section data-page-node-id="VtPY1OWwVBUWQ1wJqaACe9">
+    <h2 data-page-node-id="AhnD3j0hIhpeuuFVwzEz6r">6. 建议补充到 PRD 的条款</h2>
+    <ol id="s-prd" data-page-node-id="EJF6YmFfFkzxjvVatE5uCU"></ol>
+  </section>
+
+  <section data-page-node-id="HFcgWhTZauqBmGfTAByLIO">
+    <h2 data-page-node-id="S8B6Kt4yMaxTWe7tppkbfq">7. License 与合规</h2>
+    <table data-page-node-id="H2VkvvrzjBmWzoZJiZHRTd"><thead data-page-node-id="CTjlaKFLU2ie964JLyfXYx"><tr data-page-node-id="ta2TZPfMvBWSw3HaSM6kzB"><th data-page-node-id="yVTgfZGZCrtFP0C0LFm6V0">项目</th><th data-page-node-id="I45yAK5WZE4kBsmOouEl4x">License</th><th data-page-node-id="TCQXUvVsOQQXzWvHaHlhD8">可否闭源商用</th><th data-page-node-id="C7ywCXj6pAXMWJC2GFx3qW">结论</th></tr></thead>
+      <tbody id="s-lic" data-page-node-id="UjoQNt5rWbLqIWpwLRGQGd"></tbody></table>
+  </section>
+
+  <section data-page-node-id="3sAZ51NBOMVVd1zkKuGZtq">
+    <h2 data-page-node-id="afP5MTBW4zCLhPMPocc5fL">8. SOP：后续开发动作清单</h2>
+    <ol id="s-sop" data-page-node-id="Z5LAi8M3sQJiCJP9FZGyYv"></ol>
+    <div class="note" id="s-next" data-page-node-id="XigMoZvjE3TtpflDu0nXzf"></div>
+  </section>
+
+  <footer data-page-node-id="Ka62MbesdShv8AonVvKaHh">本报告全部结论可追溯至上述仓库的具体路径，无无源断言。</footer>
+</div>
+
+<script>
+// ====== 只改这个 DATA 对象，页面自动渲染 ======
+const DATA = {
+  project: "{{项目名称}}",
+  level: "{{L1 / L2 / L3}}",
+  prdPath: "{{PRD 文件路径}}",
+  date: "{{YYYY-MM-DD}}",
+  keywords: { zh: ["{{中文关键词1}}","{{中文关键词2}}"], en: ["{{english kw1}}","{{english kw2}}"] },
+  platforms: [
+    { name: "GitHub", channel: "gh-cli", status: "ok",      count: 5, note: "已登录，配额充足" },
+    { name: "CNB",    channel: "网页兜底", status: "needs_token", count: 2, note: "未配置 CNB_TOKEN，已用网页检索补齐" },
+    { name: "Gitee",  channel: "网页兜底", status: "needs_token", count: 3, note: "匿名 API 返回空数组，已用网页检索补齐" }
+  ],
+  candidates: [
+    { name: "{{owner/repo}}", platform: "GitHub", url: "https://github.com/{{owner/repo}}",
+      stars: 0, lang: "Dart", updated: "2026-01-01", license: "MIT",
+      rel: 5, act: 4, com: 4, total: 13,
+      summary: "{{一句话说明这个项目是什么、为什么值得对标}}" }
+  ],
+  rejected: [ "{{项目名}} — {{硬否决原因}}" ],
+  projects: ["{{项目A}}","{{项目B}}","{{项目C}}"],
+  features: [
+    // support 取值：yes / part / diff / no / na，顺序与 projects 一致
+    { name: "{{功能点1}}", priority: "P0", support: ["yes","part","no"] }
+  ],
+  featureNotes: [
+    "<b>{{差异点}}</b> — 我方：{{…}}；{{仓库名}} → {{文件路径}}：{{…}}。建议：{{…}}"
+  ],
+  flows: [
+    { name: "{{流程名}}", rows: [
+      { aspect: "触发条件", mine: "{{…}}", theirs: "{{…}}", diff: "{{…}}" },
+      { aspect: "参与角色", mine: "{{…}}", theirs: "{{…}}", diff: "{{…}}" },
+      { aspect: "状态流转", mine: "A → B → C", theirs: "A → B → C → D", diff: "{{多一级，建议…}}" },
+      { aspect: "异常分支", mine: "未定义", theirs: "请假顺延 / 余额不足告警", diff: "<b>建议补充到 PRD</b>" }
+    ]}
+  ],
+  dataModel: [
+    { entity: "{{我方实体}}", fields: "{{字段}}", theirs: "{{对标实体}}", diff: "{{差异}}" }
+  ],
+  missingEntities: "{{对标项目有而我方 PRD 缺失的实体}}",
+  gaps: {
+    A: ["{{条目}} — 参考 {{repo → 路径}}"],
+    B: ["{{条目}} — 改造点：{{…}}，风险：{{…}}"],
+    C: ["{{条目}} — 难度：{{…}}，建议：{{…}}"]
+  },
+  prdAdditions: [ "<b>{{条款标题}}</b>：{{可直接粘贴进 PRD 的具体条款文本}}" ],
+  licenses: [
+    { project: "{{项目}}", license: "MIT", commercial: "可以", conclusion: "可抄代码，需保留声明" }
+  ],
+  sop: ["{{动作1}}","{{动作2}}"],
+  next: "{{L1：不建 skill，SOP 已含于第 8 节}} / {{L2/L3：建议派生 <领域>-dev-guide skill，需用户确认后执行}}"
+};
+
+// ====== 渲染逻辑（无需改动） ======
+const M = { yes:["✅","yes"], part:["🟡","part"], diff:["⚪","diff"], no:["❌","no"], na:["➖","na"] };
+const $ = id => document.getElementById(id);
+const fill = (id, html) => { const e = $(id); if (e) e.innerHTML = html; };
+const list = (id, arr) => fill(id, arr && arr.length
+  ? arr.map(x => "<li>" + x + "</li>").join("") : '<li class="empty">暂无</li>');
+
+$("t-title").textContent = DATA.project;
+$("t-level").textContent = DATA.level;
+$("t-prd").textContent = DATA.prdPath;
+$("t-date").textContent = DATA.date;
+$("t-kwzh").textContent = (DATA.keywords.zh || []).join("、");
+$("t-kwen").textContent = (DATA.keywords.en || []).join("、");
+
+fill("s-platforms", DATA.platforms.map(p =>
+  `<tr><td>${p.name}</td><td>${p.channel}</td><td>${p.status}</td><td>${p.count}</td><td>${p.note}</td></tr>`).join(""));
+
+fill("s-cards", DATA.candidates.map(c => `
+  <div class="card">
+    <h4>${c.name}</h4>
+    <a href="${c.url}" target="_blank">${c.url}</a>
+    <p>${c.summary}</p>
+    <div class="kv">
+      <span class="tag">${c.platform}</span>
+      <span class="tag">★ ${c.stars}</span>
+      <span class="tag">${c.lang}</span>
+      <span class="tag">更新 ${c.updated}</span>
+      <span class="tag">${c.license}</span>
+      <span class="tag score">相关${c.rel}/活${c.act}/完${c.com} = ${c.total}</span>
+    </div>
+  </div>`).join(""));
+
+list("s-rejected", DATA.rejected);
+
+fill("s-feat-head", "<tr><th>我方功能点</th><th>优先级</th>" +
+  DATA.projects.map(p => `<th>${p}</th>`).join("") + "</tr>");
+fill("s-feat-body", DATA.features.map(f =>
+  `<tr><td>${f.name}</td><td>${f.priority}</td>` +
+  f.support.map(s => `<td><span class="m ${M[s][1]}">${M[s][0]}</span></td>`).join("") + "</tr>").join(""));
+list("s-feat-notes", DATA.featureNotes);
+
+fill("s-flows", DATA.flows.map(f => `
+  <div class="flow">
+    <div class="flowname">${f.name}</div>
+    <table><thead><tr><th>要素</th><th>我方 PRD</th><th>对标项目</th><th>差异与建议</th></tr></thead>
+    <tbody>${f.rows.map(r =>
+      `<tr><td>${r.aspect}</td><td>${r.mine}</td><td>${r.theirs}</td><td>${r.diff}</td></tr>`).join("")}
+    </tbody></table>
+  </div>`).join(""));
+
+fill("s-dm", DATA.dataModel.map(d =>
+  `<tr><td>${d.entity}</td><td>${d.fields}</td><td>${d.theirs}</td><td>${d.diff}</td></tr>`).join(""));
+$("s-dm-missing").innerHTML = "缺失实体：" + (DATA.missingEntities || "无");
+
+list("s-gap-a", DATA.gaps.A); list("s-gap-b", DATA.gaps.B); list("s-gap-c", DATA.gaps.C);
+list("s-prd", DATA.prdAdditions);
+fill("s-lic", DATA.licenses.map(l =>
+  `<tr><td>${l.project}</td><td>${l.license}</td><td>${l.commercial}</td><td>${l.conclusion}</td></tr>`).join(""));
+list("s-sop", DATA.sop);
+$("s-next").innerHTML = DATA.next;
+</script>
+</body>
+</html>

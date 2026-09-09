@@ -1,0 +1,21 @@
+# 真实凭证：含 token，绝不提交
+.env
+*.env
+oss-tokens.env
+tokens.env
+!env.sample
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+__pycache__/
+*.py[cod]
+
+# 技能运行产出（对照报告与原始检索 JSON）
+raw/
+oss-benchmark/
+benchmark.md
+benchmark.html
+
+# 打包产物
+*.zip
