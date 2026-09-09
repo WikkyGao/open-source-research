@@ -17,5 +17,8 @@ oss-benchmark/
 benchmark.md
 benchmark.html
 
+# WorkBuddy 工作区记忆（本目录已注册为空间，会话记录落在这里）
+.workbuddy/
+
 # 打包产物
 *.zip
