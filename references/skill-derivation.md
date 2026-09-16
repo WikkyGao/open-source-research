@@ -16,9 +16,10 @@
 **自主定级后直接执行，不要为此打断用户。** 卡在 L1/L2 边界时，
 按「宁可多输出一份轻量 skill」的原则取 L2——少一份指引的代价大于多维护一份文件的代价。
 
-派生 skill 的存放位置：与调用 `open-source-research` 的层级保持一致
-（用户级调用派生到 `~/.workbuddy/skills/`，项目级调用派生到 `./.workbuddy/skills/`），
-用户另有指定时以用户为准。执行完毕后统一汇报，不要事前反复确认。
+派生 skill 的存放位置：**跟随调用 `open-source-research` 的 agent 自己的 skill 规则**，
+不硬编码目录——该 agent 的 skills 放哪个目录，派生 skill 就放哪
+（如项目级放 `./<agent的skills目录>/`，用户级放对应用户级目录）。
+查不清楚或用户另有指定时，以用户指定的路径为准，执行完毕后统一汇报，不要事前反复确认。
 
 ## 二、派生 skill 的标准骨架
 
@@ -108,7 +109,8 @@ Top 5 坑，每条一句话 + 指向 `references/pitfalls.md`。
 - [ ] 每个流程都有异常分支，不是只有 happy path
 - [ ] 每条关键结论都有来源标注
 - [ ] License 合规判定已写进 skill
-- [ ] 用 `quick_validate.py` 校验通过
+- [ ] 按本清单逐条核对（**注**：早期版本提到的 `quick_validate.py` 实际并不存在，
+      `scripts/` 下只有 `search_oss.py` 与 `fetch_repo.py`，改为人工逐条核对）
 
 ## 七、不要做的事
 

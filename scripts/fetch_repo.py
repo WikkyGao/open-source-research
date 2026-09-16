@@ -80,6 +80,10 @@ def parse_slug(url):
     u = re.sub(r"^https?://", "", url.strip().rstrip("/"))
     u = re.sub(r"\.git$", "", u)
     parts = [p for p in u.split("/") if p]
+    # 坑（2026-09-10 修复）：直接传 "owner/repo" 这种裸 slug 会走到下面按 host 判断的分支，
+    # 结果被判成 unknown。裸两段式 slug 默认按 GitHub 处理。
+    if len(parts) == 2 and "." not in parts[0]:
+        return "github", "/".join(parts), "https://github.com/%s" % "/".join(parts)
     if len(parts) < 2:
         return "unknown", "", ""
     host, slug = parts[0].lower(), "/".join(parts[1:3])

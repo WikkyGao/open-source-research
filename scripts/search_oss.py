@@ -188,40 +188,61 @@ def norm_repo(raw, platform):
 # ---------------------------------------------------------------- 各平台检索
 
 def search_github(query, limit, lang, min_stars, keywords):
-    """GitHub：优先 gh CLI（已登录，配额高），失败退回匿名 API。"""
-    q_parts = [query]
-    if keywords:
-        q_parts.extend(keywords[:3])
-    if lang:
-        q_parts.append("language:%s" % lang)
-    if min_stars:
-        q_parts.append("stars:>%d" % min_stars)
-    q = " ".join(q_parts)
-    path = "search/repositories?q=%s&sort=stars&order=desc&per_page=%d" % (
-        urllib.parse.quote(q), min(limit, 100))
+    """GitHub：优先 gh CLI（已登录，配额高），失败退回匿名 API。
 
-    data = gh_cli(path)
+    坑（2026-09-10 修复）：补充关键词**不能**拼进同一个 q 里。
+    GitHub 搜索把多个空格分隔的词当 AND 处理，实测
+    `live stream recorder live recorder live recording stream download stars:>200`
+    返回 total_count=0，而单独 `live stream recorder stars:>200` 有 13 条。
+    正确做法：主词 + 每个补充词**各跑一次**，再按 full_name 去重合并。
+    """
+    queries = [query] + [k for k in (keywords or []) if k][:3]
+
+    merged, seen, errs = [], set(), []
     channel = "gh-cli"
-    err = None
-    if data is None:
-        data, err = None, "gh CLI 不可用或未登录"
-        token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
-        headers = {"Authorization": "Bearer %s" % token} if token else {}
-        status, data2, err2 = http_json("https://api.github.com/" + path, headers)
-        if data2 is not None:
-            data, channel, err = data2, "api.github.com", None
-        else:
-            err = "gh CLI 与匿名 API 均失败（%s；%s）" % (err, err2)
+    for qy in queries:
+        q_parts = [qy]
+        if lang:
+            q_parts.append("language:%s" % lang)
+        if min_stars:
+            q_parts.append("stars:>%d" % min_stars)
+        q = " ".join(q_parts)
+        path = "search/repositories?q=%s&sort=stars&order=desc&per_page=%d" % (
+            urllib.parse.quote(q), min(limit, 100))
 
-    if data is None:
+        data = gh_cli(path)
+        ch = "gh-cli"
+        if data is None:
+            token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+            headers = {"Authorization": "Bearer %s" % token} if token else {}
+            _st, data2, err2 = http_json("https://api.github.com/" + path, headers)
+            if data2 is not None:
+                data, ch = data2, "api.github.com"
+            else:
+                errs.append("%s → %s" % (qy, err2))
+                continue
+        channel = ch
+        for r in (data.get("items") or []):
+            n = norm_repo(r, "github")
+            key = n.get("full_name") or n.get("url")
+            if key and key not in seen:
+                seen.add(key)
+                merged.append(n)
+
+    merged.sort(key=lambda r: r.get("stars") or 0, reverse=True)
+    if merged:
+        return {"status": "ok", "channel": channel, "count": len(merged[:limit]),
+                "results": merged[:limit], "queries_run": queries,
+                "note": "", "fallback_queries": []}
+
+    if errs:
         return {"status": "failed", "channel": channel, "count": 0, "results": [],
-                "note": err or "未知错误",
+                "note": "gh CLI 与匿名 API 均失败（%s）" % "；".join(errs),
                 "fallback_queries": ["site:github.com " + query]}
-
-    items = data.get("items", []) if isinstance(data, dict) else []
-    return {"status": "ok", "channel": channel, "count": len(items),
-            "results": [norm_repo(r, "github") for r in items[:limit]],
-            "note": "", "fallback_queries": []}
+    return {"status": "ok", "channel": channel, "count": 0, "results": [],
+            "queries_run": queries,
+            "note": "无命中：可放宽 --min-stars / 去掉 --lang / 换更短的主词重试",
+            "fallback_queries": ["site:github.com " + query]}
 
 
 def search_cnb(query, limit, lang, min_stars, keywords):

@@ -1,4 +1,4 @@
-# 三平台检索通道手册（GitHub / CNB / Gitee）
+# 检索通道手册（GitHub / CNB / Gitee + 候选扩展平台）
 
 本文件记录三个平台的**真实可用性与调用细节**（2026-09 实测），并给出降级策略。
 直接按本文件执行，不要凭印象猜接口。
@@ -145,3 +145,79 @@ mv /tmp/osr.env .env && mv /tmp/osr.git .git
 - [ ] 每条候选都读过 description，剔除高 star 无关项目
 - [ ] 候选数量：每平台 3~8 条，总计不超过 15 条（超过说明关键词太泛）
 - [ ] 至少 3 条候选进入深度分析（README + 目录树）
+
+## 八、可扩展的候选开源平台（按需加入，不必每次全跑）
+
+以下平台经核实（2026-09）有可用的公开检索 API，当三主平台结果不足、
+或 PRD 涉及其强势生态时作为补充检索源。加平台时在 `scripts/search_oss.py`
+的 `SEARCHERS` 里加一个同名函数即可，输出必须走 `norm_repo` 归一化。
+
+### 1. GitLab（gitlab.com）——推荐优先补
+
+- API：`GET https://gitlab.com/api/v4/projects?search=<kw>&order_by=star_count&sort=desc&per_page=20&simple=true`
+  - `search` 匹配 path / name / description（子串、不区分大小写）；**匿名可用**，无需 token。
+  - 匿名时只返回公开项目且字段受限（加 `simple=true` 即为该字段集）。
+  - `order_by` 可选 `star_count` / `last_activity_at` / `created_at`；分页 `page` + `per_page`（上限 100）。
+- 归一化字段：`path_with_namespace` → full_name，`web_url` → url，
+  `star_count` → stars，`forks_count` → forks，`last_activity_at` → updated_at。
+- **坑**：`search` 不是全文检索，只匹配名称和描述，长尾项目搜不到；
+  语言过滤没有参数，取回后在归一化结果上自己按 `repository`/语言字段筛。
+- 适用场景：企业自托管生态（大量公司内部 GitLab 实例的开源镜像）、DevOps 工具链类需求。
+
+### 2. Codeberg（Forgejo）——中小项目池
+
+- API：`GET https://codeberg.org/api/v1/repos/search?q=<kw>&sort=stars&order=desc&limit=20`
+  - **匿名可用**；`includeDesc=true`（默认）会搜描述；`mode=source` 可排除 fork/mirror。
+  - 分页 `page` + `limit`，总数看响应头 `x-total-count`。
+- 归一化字段：`full_name`、`html_url`、`description`、`stars_count` → stars、
+  `forks_count` → forks、`language`、`updated_at`。
+- **坑**：总量比 GitHub 小几个数量级，star 普遍 <1000，`--min-stars` 默认值会滤光，
+  查 Codeberg 时要放宽或去掉 star 过滤；`sort=stars` 按字符序处理的客户端需注意数值化。
+- 适用场景：轻量级工具、隐私/自由软件项目、Rust/Go 小工具生态。
+
+### 3. GitCode（gitcode.com，CSDN 系）——中文生态补充
+
+- API：`GET https://api.gitcode.com/api/v5/search/repositories?q=<kw>&access_token=<token>&sort=stars_count&order=desc&per_page=20`
+  - 接口形状与 Gitee v5 几乎同构（Gitee 系协议），大部分接口要求认证
+    （`Authorization` 头或 `access_token` query 参数），限流默认 400 次/分、4000 次/时。
+- 归一化字段与 gitee 版 `norm_repo` 基本通用：`path_with_namespace`、`web_url`、
+  `human_name`、`stargazers_count`、`forks_count`、`pushed_at`。
+- **坑**：大量仓库是 GitHub 热门项目的加速镜像（`gh_mirrors/*`），用于对标时
+  必须跳过镜像仓库（按 `namespace.path` 或 owner 判断），否则会把镜像当成独立项目重复计数。
+- 适用场景：国内访问加速镜像、CSDN 中文社区生态。注意本 skill 已覆盖 CNB/Gitee，
+  GitCode 只在其镜像库里有独有项目时才值得加。
+
+### 4. SourceForge / 其余平台——不推荐
+
+SourceForge、OSDN、Bitbucket：API 弱（Bitbucket 无仓库级 star 概念、
+SourceForge 以下载榜为主）或生态萎缩，对标调研的边际收益低，不建议接入。
+PyPI/npm/Hugging Face 属于**包生态**而非代码托管，对应"找现成库"类需求时
+直接用其官方搜索 API 更合适，但不属于本 skill 的仓库对标范畴。
+
+**推荐接入顺序：GitLab → Codeberg →（按需）GitCode。**
+前两者匿名即用、零凭证成本；默认仍以 GitHub/Gitee/CNB 三主平台为主，
+补充平台在主平台候选不足 3 条或领域强相关时才启用。
+
+## 九、Skill 目录渠道（skills.sh / SkillHub 等）——不做检索源，只做发布渠道
+
+结论先行：**skills.sh 这类目录站不是"开源代码平台"，不能作为本 skill 的对标检索源；
+但它与 `references/skill-derivation.md` 产出的开发指引 skill 的"分发"环节相关。**
+
+判断依据：
+
+- skills.sh（Vercel Labs）是 **SKILL.md 格式 skill 包**的注册目录与安装渠道
+  （`npx skills add owner/repo`），收录对象是"给 agent 用的指令包"，不是业务系统代码；
+  检索它找不到 ERP、直播录制这类可对标的**实现**。
+- 所谓 "SkillHub" 类站点同理：它们聚合的是 prompt/指令资产，不是含数据模型、
+  状态机、异常分支的业务系统，满足不了本 skill "业务流程与数据模型对照"的目标。
+- 因此：**阶段 2/3 的检索源不加入 skills.sh / SkillHub**，否则会污染候选池
+  （可对标项目 star 门槛与相关性判据对目录站完全不适用）。
+
+可行的是发布侧用法——阶段 5 派生出 `<领域>-dev-guide` 后：
+
+- 若希望被其他 agent 用户复用，把 skill 包放到公开 GitHub 仓库
+  （根目录或 `skills/` 下含 `SKILL.md`，frontmatter 有 `name` + `description` 即可被
+  vercel-labs/skills CLI 发现），再向 skills.sh 注册表提 PR 收录。这是零成本渠道。
+- 是否发布由用户决定，skill 本身不自动上传、不自动提 PR。
+
+一句话记住：**skills.sh 类站点是"派生产物的分发渠道"，不是"对标调研的数据源"。**
