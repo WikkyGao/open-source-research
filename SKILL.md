@@ -1,6 +1,6 @@
 ---
 name: open-source-research
-description: 拿到 PRD 后，在 GitHub、CNB(cnb.cool)、Gitee 三个开源平台检索同类项目，产出功能与业务流程对照材料（Markdown + HTML 可视化），按项目复杂度派生一份开发指引型 skill 或 skill 包；用户确认后也可按 repo2skill 方式把确认的开源项目转成单文件参考 skill。触发场景：需求分析完成、拿到 PRD、想找开源参考、开源对标调研、竞品开源项目调研、"找个类似项目参考一下"、"造轮子前先看看有没有现成的"、"把这个开源项目转成 skill"。
+description: 拿到 PRD 后，在 GitHub、CNB(cnb.cool)、Gitee 三个开源平台检索同类项目，产出功能与业务流程对照材料（Markdown + HTML 可视化），按项目复杂度派生一份开发指引型 skill 或 skill 包；用户确认后也可按技能转化方式把确认的开源项目转成单文件参考 skill。触发场景：需求分析完成、拿到 PRD、想找开源参考、开源对标调研、竞品开源项目调研、"找个类似项目参考一下"、"造轮子前先看看有没有现成的"、"把这个开源项目转成 skill"。
 agent_created: true
 ---
 
@@ -17,7 +17,7 @@ agent_created: true
 - 需求分析完成、PRD 已产出（含 `pm-requirement-analysis__skillhub` 生成的 `PRD.md`）
 - 用户问"有没有类似的开源项目"、"先看看别人怎么做的"、"造轮子前先调研一下"
 - 用户明确要求在 GitHub / CNB / Gitee 上找参考项目并做对照
-- 想把调研中确认的开源项目转成 skill，方便后续随时参考（repo2skill 式）
+- 想把调研中确认的开源项目转成 skill，方便后续随时参考（技能转化）
 
 ## 输入
 
@@ -119,11 +119,11 @@ python3 <skill>/scripts/search_oss.py \
    差距分析三级分类、**建议补充到 PRD 的具体条款**、License 合规判定。
 4. 完成后用 `present_files` 同时呈现 MD 与 HTML。
 
-### 阶段 4.5｜用户确认候选项目（repo2skill 转换入口）
+### 阶段 4.5｜用户确认候选项目（技能转化入口）
 
 对照报告呈现后，问用户一句：**"有没有想把某个候选项目转成 skill 留作参考的？"**
 
-- 用户点名了项目（一个或多个）→ 对每个项目执行**阶段 5 的 B 路线（repo2skill 式转换）**。
+- 用户点名了项目（一个或多个）→ 对每个项目执行**阶段 5 的 B 路线（技能转化）**。
 - 用户没点名 → 跳过 B 路线，直接走阶段 5 的 A 路线（按复杂度派生开发指引）。
 - 不要跳过确认：B 路线产物会引导 agent 使用别人的项目，不经用户确认就生成属于越界。
 
@@ -143,20 +143,20 @@ python3 <skill>/scripts/search_oss.py \
 - **执行完后汇报**：定级结论、skill 名称、存放路径、包含的 references 清单。
   用户不满意再改，不要事前反复确认。
 
-#### B 路线｜repo2skill 式转换（仅在阶段 4.5 用户确认后执行）
+#### B 路线｜技能转化（仅在阶段 4.5 用户确认后执行）
 
 把用户确认的开源项目转成**单文件参考 skill**，完整流程（输入识别、镜像轮换、
-数据抓取、分析、生成、存放询问、写入）严格按 `references/repo2skill.zh.md` 执行。
+数据抓取、分析、生成、存放询问、写入）严格按 `references/技能转化.md` 执行。
 要点：
 
 - **产物形态**：一个目录只放一个 `SKILL.md`，含全部章节（快速上手/概述/功能/安装/
   使用/API/配置/开发/排错/资源），不拆 references/。与 A 路线的拆分骨架是两种不同产物，
   用户点名"转成 skill"时指的就是这种。
-- **frontmatter**：按 repo2skill 规范带 `source`（来源仓库 URL）、`platform`、`tags`、
+- **frontmatter**：按技能转化规范带 `source`（来源仓库 URL）、`platform`、`tags`、
   `generated` 字段，保留溯源。
 - **素材复用**：该项目在阶段 3 已抓过骨架（`raw/repo-<name>.json`），直接复用，
-  缺什么（如 README 全文、docs/）再按 repo2skill 的抓取步骤补齐，不要重复 clone。
-- **存放位置**：按 repo2skill 流程**询问用户**三选一（项目本地 / 用户全局 /
+  缺什么（如 README 全文、docs/）再按技能转化的抓取步骤补齐，不要重复 clone。
+- **存放位置**：按技能转化流程**询问用户**三选一（项目本地 / 用户全局 /
   当前 agent 的 skills 目录），与 A 路线"不问用户"的规则不同——B 路线本来就以用户确认为前提。
 - **License 红线不变**：AGPL/GPL 项目只提炼思路与用法，SKILL.md 内不得搬运其源码片段。
 - **汇报**：skill 名称、来源仓库、存放路径、章节清单。
@@ -180,7 +180,7 @@ python3 <skill>/scripts/search_oss.py \
 | `references/platform-search.md`         | 三平台端点、认证、字段、实测坑、兜底策略                      |
 | `references/comparison-method.md`       | 打分模型、对照矩阵图例、流程对照四要素、差距三级分类                |
 | `references/skill-derivation.md`        | 复杂度分级、派生 skill 骨架、抽取规则、验收 checklist       |
-| `references/repo2skill.zh.md`           | repo2skill 完整中文译本；B 路线（用户确认后把开源项目转成单文件参考 skill）的执行手册 |
+| `references/技能转化.md`                 | 技能转化执行手册；B 路线（用户确认后把开源项目转成单文件参考 skill） |
 | `assets/benchmark-report-template.md`   | Markdown 报告模板                             |
 | `assets/benchmark-report-template.html` | HTML 可视化模板（只改 `DATA` 对象）                  |
 | `env.sample`                            | 平台凭证模板；复制为 `.env` 后填写，`.env` 已被 gitignore |
