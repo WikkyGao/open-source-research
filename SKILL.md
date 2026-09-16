@@ -1,5 +1,8 @@
 ---
 name: open-source-research
+slug: open-source-research
+version: 1.0.0
+displayName: PRD 开源对标与技能派生
 description: 拿到 PRD 后，在 GitHub、CNB(cnb.cool)、Gitee 三个开源平台检索同类项目，产出功能与业务流程对照材料（Markdown + HTML 可视化），按项目复杂度派生一份开发指引型 skill 或 skill 包；用户确认后也可按技能转化方式把确认的开源项目转成单文件参考 skill。触发场景：需求分析完成、拿到 PRD、想找开源参考、开源对标调研、竞品开源项目调研、"找个类似项目参考一下"、"造轮子前先看看有没有现成的"、"把这个开源项目转成 skill"。
 agent_created: true
 ---
