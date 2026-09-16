@@ -51,7 +51,9 @@ oss-benchmark/<项目名>/
 1. 读取 PRD，确认已理解业务领域、核心实体、核心流程。
    PRD 太粗（抽不出 ≥3 条核心流程）就先要求补充，不要硬检索。
 2. 检查凭证（脚本自动读取技能目录下的 `.env`，无需 source；首次使用 `cp env.sample .env`）：
-   
+
+   > 下文命令中的 `<skill>` 一律指本 skill 的安装目录（即本 SKILL.md 所在目录）。
+
    ```bash
    gh auth status                                   # GitHub：已登录则无需处理
    python3 <skill>/scripts/search_oss.py -q "<一个试探词>" --limit 1 --platforms cnb,gitee
