@@ -127,16 +127,18 @@ export GITHUB_TOKEN="<github pat>"   # gh 已登录时可省略
 
 ### 打包分发前
 
-`package_skill.py` 会把目录内**所有**文件打进 zip，包括 `.env` 和 `.git`。
-打包前先临时移走这两个，打完再还原：
+打包工具（如 skill-creator 的 `package_skill.py`）会把目录内**所有**文件打进 zip，
+包括 `.env` 和 `.git`。打包前先临时移走这两个，打完再还原：
 
 ```bash
 mv .env /tmp/osr.env && mv .git /tmp/osr.git
-python3 <skill-creator>/scripts/package_skill.py . ..
+# <打包命令>：用你实际的打包脚本/流程，本 skill 自身不附带打包工具
 mv /tmp/osr.env .env && mv /tmp/osr.git .git
 ```
 
 否则令牌会随 zip 泄露，zip 里还会多出几十个 `.git/hooks` 样例文件。
+（`skill-derivation.md` 验收 checklist 曾引用的 `quick_validate.py` 同样不存在，
+验收按该 checklist 人工逐条核对即可。）
 
 ## 七、检索质量自检
 
